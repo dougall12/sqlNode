@@ -1,23 +1,24 @@
+import "dotenv/config";
 import mysql from "mysql2";
 
 //Mysql details
 
-const db = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "sqlToolsUser",
-  password: "password",
-  database: "eufcApp",
-  port: "3306",
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB,
+  port: process.env.DB_PORT,
 });
 
 //DB Connect
 
 const database = () => {
-  db.connect((err) => {
+  pool.getConnection((err, connection) => {
     if (err) {
       console.log(err);
     }
-    console.log("mySQL Connected...");
+    console.log(`Connected as ID ${connection.threadId}...`);
   });
 };
 
